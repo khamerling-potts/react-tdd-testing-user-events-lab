@@ -1,4 +1,20 @@
+import { useState } from "react";
+
 function App() {
+  const [interests, setInterests] = useState({
+    python: false,
+    javascript: false,
+    "c++": false,
+  });
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  function handleInterestChange(e) {
+    const interest = e.target.id;
+    setInterests({ ...interests, [interest]: e.target.checked });
+  }
+  function handleSubmit(e) {
+    e.preventDefault();
+    setIsSubmitted(true);
+  }
   return (
     <main>
       <h1>Hi, I'm (your name)</h1>
@@ -18,6 +34,40 @@ function App() {
         <a href="https://github.com">GitHub</a>
         <a href="https://linkedin.com">LinkedIn</a>
       </div>
+      <form onSubmit={handleSubmit}>
+        <input type="text" placeholder="your name"></input>
+        <input type="text" placeholder="email address"></input>
+        <input
+          type="checkbox"
+          id="python"
+          checked={interests.python}
+          onChange={handleInterestChange}
+        ></input>
+        <label htmlFor="python">Python</label>
+        <input
+          type="checkbox"
+          id="javascript"
+          checked={interests.javascript}
+          onChange={handleInterestChange}
+        ></input>
+        <label htmlFor="javascript">JavaScript</label>
+        <input
+          type="checkbox"
+          id="c++"
+          checked={interests["c++"]}
+          onChange={handleInterestChange}
+        ></input>
+        <label htmlFor="c++">C++</label>
+        <button type="submit">Sign up for newsletter</button>
+      </form>
+      {isSubmitted ? (
+        <p>
+          Thank you for signing up! Your interests are:{" "}
+          {Object.keys(interests)
+            .filter((interest) => interests[interest])
+            .join(", ")}
+        </p>
+      ) : null}
     </main>
   );
 }
